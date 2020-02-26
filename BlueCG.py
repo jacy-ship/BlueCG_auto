@@ -4,9 +4,9 @@ import cv2
 import numpy as np
 from time import sleep
 skill_level = 9
-template_skill = cv2.imread('C:\\Users\iioyuo\Desktop\level2.png') #技能圖
-template_master = cv2.imread('C:\\Users\iioyuo\Desktop\master.png') #怪物圖1
-template_master1 = cv2.imread('C:\\Users\iioyuo\Desktop\master1.png')#怪物圖2
+template_skill = cv2.imread('C:\\Users\iioyuo\Desktop\Git hub\BlueCG_auto\skill.png') #技能圖
+template_master = cv2.imread('C:\\Users\iioyuo\Desktop\Git hub\BlueCG_auto\master.png') #怪物圖1
+template_master1 = cv2.imread('C:\\Users\iioyuo\Desktop\Git hub\BlueCG_auto\master1.png')#怪物圖2
 meth ='cv2.TM_SQDIFF_NORMED' #opencv中找物件的公式
 #抓圖片的寬跟長
 w = template_skill.shape[1]  
