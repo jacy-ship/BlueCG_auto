@@ -21,11 +21,33 @@ monster1 = 1
 monster2 = 0
 monster3 = 0
 #走路方向
-step1_x=138
-step1_y=125
-step2_x=510
-step2_y=407
+stepN_x=138
+stepN_y=125
+stepS_x=510
+stepS_y=407
+stepE_x=525
+stepE_y=107
+stepW_x=78
+stepW_y=438
+
 step =0  #一個方向走3次
+work =1
+N_o=2
+N=2
+S_o=1
+S=1
+E_o=2
+E=2
+W_o=2
+W=2
+NS =1
+SN =1
+WE =1
+EW =1
+N_back_S=0
+S_back_N=0
+E_back_W=0
+W_back_E=0
 #抓技能圖片的寬跟長
 if(player_0_skill_on == 1):
     template_player0_skill = cv2.imread('C:\\Users\iioyuo\Desktop\Git hub\BlueCG_auto\skill_0.png') #第一個腳色技能圖
@@ -58,9 +80,8 @@ if(monster0 == 1):
                 monster3_h = template_monster3.shape[0]
 meth ='cv2.TM_SQDIFF_NORMED' #opencv中找物件的公式
 
-
 while True :
-    sleep(2.5)
+    sleep(3)
     play0_screenshot = pag.screenshot(region=(0,0, 640,480 )) #螢幕的截圖(放在最左上角(x,y,寬,長)
     play0_screenshot = np.asarray(play0_screenshot) #轉nparray
     play0_screenshot_copy = play0_screenshot.copy()
@@ -115,7 +136,7 @@ while True :
                 play1_screenshot = np.asarray(play1_screenshot) #轉nparray
                 play1_skill_res = cv2.matchTemplate(play1_screenshot,template_player1_skill,method) #找技能的地方在哪裡
                 min_val_monster2, max_val_monster2, min_loc_monster2, max_loc_monster2 = cv2.minMaxLoc(play1_skill_res)
-                play1_skill_loc = np.where(play1_skill_loc <= 0.2) #回傳為 y, x 設一個閾值可以率過錯誤的判斷
+                play1_skill_loc = np.where(play1_skill_res <= 0.2) #回傳為 y, x 設一個閾值可以率過錯誤的判斷
                 play1_skill_loc=tuple([play1_skill_loc[1],play1_skill_loc[0]]) #轉換為x,y
                 pag.moveTo(640+play1_skill_loc[0]+(player1_skill_w/2),play1_skill_loc[1]+player1_skill_h-8)
                 sleep(0.3)
@@ -149,13 +170,62 @@ while True :
         if(player_2==1):
             print('no player2')
     else:
-        if (step <3):
-            pag.moveTo(step1_x,step1_y)
-            pag.click()
-        else:
-            pag.moveTo(step2_x,step2_y)
-            pag.click()
-            if(step == 5):
-                step =0
-        step =step+1
-        print("not thing")
+        if (work ==1):
+            if(NS ==1 ):
+                if (N !=0):
+                    pag.moveTo(stepN_x,stepN_y,duration=1)
+                    pag.click()
+                    N=N-1
+                else:
+                    pag.moveTo(stepS_x,stepS_y,duration=1)
+                    pag.click()
+                    N_back_S=N_back_S+1
+                    if(N_back_S==N_o):
+                        N=N_o
+                        NS=0
+            else :
+                if(SN==1):
+                    if (S !=0):
+                        pag.moveTo(stepS_x,stepS_y,duration=1)
+                        pag.click()
+                        S=S-1
+                    else:
+                        pag.moveTo(stepN_x,stepN_y,duration=1)
+                        pag.click()
+                        S_back_N=S_back_N+1
+                        if(S_back_N==S_o):
+                            S=S_o
+                            SN=0
+                else :
+                    if(EW==1):
+                        if (E !=0):
+                            pag.moveTo(stepE_x,stepE_y,duration=1)
+                            pag.click()
+                            E=E-1
+                        else:
+                            pag.moveTo(stepW_x,stepW_y,duration=1)
+                            pag.click()
+                            E_back_W=E_back_W+1
+                            if(E_back_W==E_o):
+                                E=E_o
+                                EW=0
+                    else:
+                        if (W !=0):
+                            pag.moveTo(stepW_x,stepW_y,duration=1)
+                            pag.click()
+                            W=W-1
+                        else:
+                            pag.moveTo(stepE_x,stepE_y,duration=1)
+                            pag.click()
+                            W_back_E=W_back_E+1
+                            if(W_back_E==W_o):
+                                W=W_o
+                                NS=1
+                                SN=1
+                                WE=1
+                                EW=1
+                                N_back_S=0
+                                S_back_N=0
+                                E_back_W=0
+                                W_back_E=0
+        print("not thing",N,S,W,E)
